@@ -1,0 +1,110 @@
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+}
+
+/* Estilos específicos para o Command */
+.cmd-input {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[cmdk-root] {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 6px;
+  background-color: white;
+  border: 1px solid rgb(226, 232, 240);
+}
+
+[cmdk-input] {
+  border-bottom: 1px solid rgb(226, 232, 240);
+  padding: 8px 16px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+[cmdk-item] {
+  content-visibility: auto;
+  padding: 8px 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border-left: 2px solid transparent;
+}
+
+[cmdk-item][data-selected="true"] {
+  background-color: rgb(243, 244, 246);
+  border-left-color: rgb(79, 70, 229);
+}
+
+[cmdk-group] {
+  overflow: hidden;
+}
+
+[cmdk-empty] {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: rgb(107, 114, 128);
+}
+
+/* Estilos do Popover */
+.popover-content {
+  z-index: 50;
+  border-radius: 6px;
+  border: 1px solid rgb(226, 232, 240);
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  animation: slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Adicione estes estilos */
+[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+  background-color: white !important;
+}
+
+.cmd-dropdown {
+  background-color: white;
+  border: 1px solid rgb(226, 232, 240);
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Garante que o fundo seja sólido */
+[cmdk-root],
+[cmdk-group],
+[cmdk-input],
+[cmdk-item] {
+  background-color: white !important;
+}
+
+/* Ajusta a borda do input */
+[cmdk-input] {
+  border-bottom: 1px solid rgb(226, 232, 240) !important;
+}
+
+/* Ajusta o hover dos itens */
+[cmdk-item]:hover {
+  background-color: rgb(243, 244, 246) !important;
+} 

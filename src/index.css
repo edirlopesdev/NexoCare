@@ -1,0 +1,24 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Adicione estilos globais aqui, se necessário */
+.sidebar-icon {
+  transition: width 0.3s, height 0.3s;
+}
+
+.sidebar-icon-collapsed {
+  width: 20px;
+  height: 20px;
+}
+
+.collapsible-content {
+  display: none;
+}
+
+.collapsible.open > .collapsible-content {
+  display: block;
+}
+
+
+
