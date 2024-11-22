@@ -1,54 +1,47 @@
 import React, { useState } from 'react';
-import { AgendamentoForm } from '../components/AgendamentoForm';
+import { AgendamentoCalendario } from '../components/AgendamentoCalendario';
 import { AgendamentoList } from '../components/AgendamentoList';
-import { Agendamento } from '../types/supabase-types';
+import { Button } from '../components/ui/button';
 
-type ModoFormulario = 'lista' | 'novo' | 'edicao';
+type ModoVisualizacao = 'lista' | 'calendario';
 
 export function AgendamentosPage() {
-  const [agendamentoParaEditar, setAgendamentoParaEditar] = useState<Agendamento | undefined>(undefined);
+  const [modo, setModo] = useState<ModoVisualizacao>('calendario');
   const [triggerRefetch, setTriggerRefetch] = useState(false);
-  const [modo, setModo] = useState<ModoFormulario>('lista');
-
-  const handleEditAgendamento = (agendamento: Agendamento) => {
-    setAgendamentoParaEditar(agendamento);
-    setModo('edicao');
-  };
-
-  const handleNovoAgendamento = () => {
-    setAgendamentoParaEditar(undefined);
-    setModo('novo');
-  };
 
   const handleAgendamentoSalvo = () => {
-    setAgendamentoParaEditar(undefined);
     setTriggerRefetch(!triggerRefetch);
-    setModo('lista');
-  };
-
-  const handleVoltar = () => {
-    setAgendamentoParaEditar(undefined);
-    setModo('lista');
   };
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Gerenciar Agendamentos</h1>
-      <div className="space-y-6">
-        {modo === 'lista' ? (
-          <AgendamentoList 
-            onEditAgendamento={handleEditAgendamento}
-            onNovoAgendamento={handleNovoAgendamento}
-            triggerRefetch={triggerRefetch}
-          />
-        ) : (
-          <AgendamentoForm 
-            agendamentoParaEditar={agendamentoParaEditar} 
-            onAgendamentoSalvo={handleAgendamentoSalvo}
-            onVoltar={handleVoltar}
-          />
-        )}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Gerenciar Agendamentos</h1>
+        <div className="flex gap-2">
+          <Button
+            variant={modo === 'calendario' ? 'secondary' : 'ghost'}
+            onClick={() => setModo('calendario')}
+          >
+            Calendário
+          </Button>
+          <Button
+            variant={modo === 'lista' ? 'secondary' : 'ghost'}
+            onClick={() => setModo('lista')}
+          >
+            Lista
+          </Button>
+        </div>
       </div>
+      
+      {modo === 'calendario' ? (
+        <AgendamentoCalendario onAgendamentoSalvo={handleAgendamentoSalvo} />
+      ) : (
+        <AgendamentoList 
+          onEditAgendamento={() => {}}
+          onNovoAgendamento={() => setModo('calendario')}
+          triggerRefetch={triggerRefetch}
+        />
+      )}
     </div>
   );
 }

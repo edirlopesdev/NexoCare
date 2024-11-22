@@ -33,18 +33,18 @@ export function PacientesPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Gerenciar Clientes</h1>
+      <h1 className="text-2xl font-bold mb-6">Gerenciar Pacientes</h1>
       <div className="space-y-6">
         {modo === 'lista' ? (
           <PacienteList 
-            onEditCliente={handleEditCliente}
-            onNovoCliente={handleNovoCliente}
+            onEditPaciente={handleEditCliente}
+            onNovoPaciente={handleNovoCliente}
             triggerRefetch={triggerRefetch}
           />
         ) : (
           <PacienteForm 
-            clienteParaEditar={clienteParaEditar} 
-            onClienteSalvo={handleClienteSalvo}
+            pacienteParaEditar={clienteParaEditar} 
+            onPacienteSalvo={handleClienteSalvo}
             onVoltar={handleVoltar}
           />
         )}

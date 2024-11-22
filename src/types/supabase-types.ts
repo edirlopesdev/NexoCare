@@ -1,10 +1,29 @@
 export interface Cliente {
-  id: string; // UUID
-  empresa_id: string; // UUID
+  id: string;
+  empresa_id: string;
   nome: string;
-  tipo_cabelo: string | null;
-  condicao_cabelo: string | null;
-  criado_em: string; // timestamp with time zone
+  data_nascimento: string;
+  cpf: string;
+  rg: string | null;
+  sexo: "masculino" | "feminino";
+  estado_civil: "solteiro" | "casado" | "divorciado" | "viuvo" | null;
+  profissao: string | null;
+  telefone: string;
+  telefone_secundario: string | null;
+  email: string | null;
+  cep: string;
+  endereco: string;
+  numero: string;
+  complemento: string | null;
+  bairro: string;
+  cidade: string;
+  convenio: string | null;
+  numero_carteirinha: string | null;
+  validade_carteirinha: string | null;
+  contato_emergencia: string | null;
+  telefone_emergencia: string | null;
+  observacoes: string | null;
+  criado_em: string;
 }
 
 export interface Agendamento {
@@ -44,6 +63,25 @@ export interface Produto {
   tipo: string;
   codigo_cor: string | null;
   criado_em: string | null; // timestamp with time zone
+}
+
+export interface Anamnese {
+  id: string;
+  empresa_id: string;
+  paciente_id: string;
+  queixa_principal: string;
+  historia_doenca: string;
+  antecedentes_pessoais: string | null;
+  antecedentes_familiares: string | null;
+  medicamentos: string | null;
+  alergias: string | null;
+  sinais_vitais: {
+    pressao_arterial: string | null;
+    frequencia_cardiaca: string | null;
+    temperatura: string | null;
+  };
+  exame_fisico: string | null;
+  criado_em: string;
 }
 
 // Adicione outras interfaces para as demais tabelas do seu banco de dados

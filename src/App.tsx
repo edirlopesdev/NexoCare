@@ -9,10 +9,10 @@ import { PacientesPage } from './pages/Pacientes';
 import { PerfisPage } from './pages/Perfis';
 import { PlanosPage } from './pages/Planos';
 import { ProdutosPage } from './pages/Produtos';
+import { AnamnesesPage } from './pages/Anamneses';
 import { Toaster } from "./components/ui/toaster"
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-// Componente separado para usar o hook useAuth
 function AppRoutes() {
   const { user, loading } = useAuth();
 
@@ -40,6 +40,10 @@ function AppRoutes() {
           <Route
             path="/pacientes"
             element={user ? <PacientesPage /> : <Navigate to="/login" replace />}
+          />
+          <Route
+            path="/pacientes/:pacienteId/anamneses"
+            element={user ? <AnamnesesPage /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/perfis"
