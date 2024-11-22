@@ -84,4 +84,11 @@ export interface Anamnese {
   criado_em: string;
 }
 
+export interface Empresa {
+  id: string;
+  nome: string;
+  ramo: string;
+  criado_em: string;
+}
+
 // Adicione outras interfaces para as demais tabelas do seu banco de dados

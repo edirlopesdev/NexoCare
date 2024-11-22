@@ -33,19 +33,11 @@ export function LoginForm() {
     },
   });
 
-  const registerForm = useForm<RegisterFormValues>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
-
   const empresaForm = useForm<EmpresaFormValues>({
     resolver: zodResolver(empresaSchema),
     defaultValues: {
       nome: "",
+      ramo: "",
       email: "",
       password: "",
     },
@@ -82,7 +74,10 @@ export function LoginForm() {
     try {
       const { data: empresaData, error: empresaError } = await supabase
         .from('empresas')
-        .insert({ nome: data.nome })
+        .insert({ 
+          nome: data.nome,
+          ramo: data.ramo
+        })
         .select()
         .single();
 
@@ -115,45 +110,17 @@ export function LoginForm() {
     }
   };
 
-  const onRegisterSubmit = async (data: RegisterFormValues) => {
-    setIsLoading(true);
-    try {
-      const { user, error } = await signUp(data.email, data.password, {
-        empresa_id: empresaId,
-        nome: data.email.split('@')[0],
-        cargo: 'Usuário'
-      });
-      if (error) throw new Error(error);
-      console.log("Registro bem-sucedido:", user);
-      toast({
-        title: "Sucesso",
-        description: "Registro bem-sucedido. Por favor, faça login.",
-        variant: "default",
-      });
-    } catch (error) {
-      console.error("Erro no registro:", error);
-      toast({
-        title: "Erro",
-        description: error instanceof Error ? `Erro no registro: ${error.message}` : "Ocorreu um erro desconhecido durante o registro.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <Card className="w-full max-w-md mx-auto mt-8 shadow-md">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold mb-2">Autenticação</CardTitle>
-        <CardDescription>Faça login ou crie uma nova conta.</CardDescription>
+        <CardDescription>Faça login ou cadastre sua empresa.</CardDescription>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="login" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="cadastro">Cadastro</TabsTrigger>
-            <TabsTrigger value="empresa">Nova Empresa</TabsTrigger>
+            <TabsTrigger value="empresa">Cadastro</TabsTrigger>
           </TabsList>
           <TabsContent value="login">
             <form onSubmit={loginForm.handleSubmit(onLoginSubmit)}>
@@ -181,40 +148,6 @@ export function LoginForm() {
               </div>
             </form>
           </TabsContent>
-          <TabsContent value="cadastro">
-            <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)}>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="nome@exemplo.com"
-                    {...registerForm.register("email")}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Senha</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    {...registerForm.register("password")}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    {...registerForm.register("confirmPassword")}
-                  />
-                </div>
-                <Button type="submit" disabled={isLoading} className="text-base">
-                  {isLoading ? "Registrando..." : "Registrar"}
-                </Button>
-              </div>
-            </form>
-          </TabsContent>
           <TabsContent value="empresa">
             <form onSubmit={empresaForm.handleSubmit(onEmpresaSubmit)}>
               <div className="grid gap-4">
@@ -226,15 +159,45 @@ export function LoginForm() {
                     placeholder="Nome da Empresa"
                     {...empresaForm.register("nome")}
                   />
+                  {empresaForm.formState.errors.nome && (
+                    <p className="text-red-500">{empresaForm.formState.errors.nome.message}</p>
+                  )}
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="ramo">Ramo de Atividade</Label>
+                  <select
+                    id="ramo"
+                    {...empresaForm.register("ramo")}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2"
+                  >
+                    <option value="">Selecione o ramo de atividade</option>
+                    <option value="psiquiatria">Psiquiatria</option>
+                    <option value="psicologia">Psicologia</option>
+                    <option value="odontologia">Odontologia</option>
+                    <option value="fisioterapia">Fisioterapia</option>
+                    <option value="nutrição">Nutrição</option>
+                    <option value="fonoaudiologia">Fonoaudiologia</option>
+                    <option value="terapia_ocupacional">Terapia Capilar</option>
+                    <option value="estetica">Estética</option>
+                    <option value="dermatologia">Dermatologia</option>
+                    <option value="acupuntura">Acupuntura</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                  {empresaForm.formState.errors.ramo && (
+                    <p className="text-red-500">{empresaForm.formState.errors.ramo.message}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email do Administrador</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@example.com"
+                    placeholder="admin@exemplo.com"
                     {...empresaForm.register("email")}
                   />
+                  {empresaForm.formState.errors.email && (
+                    <p className="text-red-500">{empresaForm.formState.errors.email.message}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="password">Senha do Administrador</Label>
@@ -243,6 +206,9 @@ export function LoginForm() {
                     type="password"
                     {...empresaForm.register("password")}
                   />
+                  {empresaForm.formState.errors.password && (
+                    <p className="text-red-500">{empresaForm.formState.errors.password.message}</p>
+                  )}
                 </div>
                 <Button type="submit" disabled={isLoading} className="text-base">
                   {isLoading ? "Registrando..." : "Registrar Empresa e Administrador"}
